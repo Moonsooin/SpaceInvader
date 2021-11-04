@@ -169,18 +169,18 @@ pip-log.txt
 log*
 *.ttf
 .checkstyle
-!/develop.iml
+.idea/.gitignore
 
-!/.idea/.gitignore
+.idea/misc.xml
 
-!/.idea/misc.xml
+.idea/modules.xml
 
-!/.idea/modules.xml
+.idea/runConfigurations.xml
 
-!/.idea/runConfigurations.xml
+.idea/vcs.xml
 
-!/.idea/vcs.xml
+.idea/workspace.xml
 
-!/.idea/workspace.xml
+develop.iml
 
-!/.gitignore
+.gitattributes
