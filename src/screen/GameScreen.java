@@ -8,12 +8,7 @@ import engine.Cooldown;
 import engine.Core;
 import engine.GameSettings;
 import engine.GameState;
-import entity.Bullet;
-import entity.BulletPool;
-import entity.EnemyShip;
-import entity.EnemyShipFormation;
-import entity.Entity;
-import entity.Ship;
+import entity.*;
 
 /**
  * Implements the game screen, where the action happens.
@@ -56,6 +51,7 @@ public class GameScreen extends Screen {
 	private Cooldown screenFinishedCooldown;
 	/** Set of all bullets fired by on screen ships. */
 	private Set<Bullet> bullets;
+	private Set<Dropitem> dropitems;
 	/** Current score. */
 	private int score;
 	/** Player lives left. */
@@ -70,6 +66,7 @@ public class GameScreen extends Screen {
 	private boolean levelFinished;
 	/** Checks if a bonus life is received. */
 	private boolean bonusLife;
+
 
 	/**
 	 * Constructor, establishes the properties of the screen.
@@ -120,6 +117,7 @@ public class GameScreen extends Screen {
 				.getCooldown(BONUS_SHIP_EXPLOSION);
 		this.screenFinishedCooldown = Core.getCooldown(SCREEN_CHANGE_INTERVAL);
 		this.bullets = new HashSet<Bullet>();
+		this.dropitems = new HashSet<Dropitem>();
 
 		// Special input delay / countdown.
 		this.gameStartTime = System.currentTimeMillis();
@@ -196,7 +194,9 @@ public class GameScreen extends Screen {
 		}
 
 		manageCollisions();
+		manageItemCollisions();
 		cleanBullets();
+		moveDropitem();
 		draw();
 
 		if ((this.enemyShipFormation.isEmpty() || this.lives == 0)
@@ -228,6 +228,10 @@ public class GameScreen extends Screen {
 		for (Bullet bullet : this.bullets)
 			drawManager.drawEntity(bullet, bullet.getPositionX(),
 					bullet.getPositionY());
+
+		for (Dropitem dropitem : this.dropitems)
+			drawManager.drawEntity(dropitem, dropitem.getPositionX(),
+					dropitem.getPositionY());
 
 		// Interface.
 		drawManager.drawScore(this, this.score);
@@ -266,6 +270,20 @@ public class GameScreen extends Screen {
 	}
 
 	/**
+	 * Cleans bullets that go off screen.
+	 */
+	private void moveDropitem() {
+		Set<Dropitem> garbage_item = new HashSet<Dropitem>();
+		for (Dropitem dropitem : this.dropitems) {
+			dropitem.update();
+			if (dropitem.getPositionY() < SEPARATION_LINE_HEIGHT
+					|| dropitem.getPositionY() > this.height)
+				garbage_item.add(dropitem);
+		}
+		this.dropitems.removeAll(garbage_item);
+	}
+
+	/**
 	 * Manages collisions between bullets and ships.
 	 */
 	private void manageCollisions() {
@@ -286,6 +304,7 @@ public class GameScreen extends Screen {
 					if (!enemyShip.isDestroyed()
 							&& checkCollision(bullet, enemyShip)) {
 						this.score += enemyShip.getPointValue();
+						enemyShip.drop(dropitems);
 						this.shipsDestroyed++;
 						this.enemyShipFormation.destroy(enemyShip);
 						recyclable.add(bullet);
@@ -302,6 +321,18 @@ public class GameScreen extends Screen {
 			}
 		this.bullets.removeAll(recyclable);
 		BulletPool.recycle(recyclable);
+	}
+	private void manageItemCollisions() {
+		Set<Dropitem> garbage_item = new HashSet<Dropitem>();
+		for (Dropitem dropitem : this.dropitems) {
+			if (checkCollision(dropitem, this.ship) && !this.levelFinished) {
+				// 특수 효과 부여 및 아이템 제거
+
+
+				garbage_item.add(dropitem);
+			}
+		}
+		this.dropitems.removeAll(garbage_item);
 	}
 
 	/**

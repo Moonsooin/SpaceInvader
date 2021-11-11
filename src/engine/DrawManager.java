@@ -58,6 +58,8 @@ public final class DrawManager {
 		ShipDestroyed,
 		/** Player bullet. */
 		Bullet,
+		/** Player drop item **/
+		Dropped,
 		/** Enemy bullet. */
 		EnemyBullet,
 		/** First enemy ship - first form. */
@@ -78,6 +80,8 @@ public final class DrawManager {
 		Explosion
 	};
 
+
+
 	/**
 	 * Private constructor.
 	 */
@@ -92,6 +96,7 @@ public final class DrawManager {
 			spriteMap.put(SpriteType.Ship, new boolean[13][8]);
 			spriteMap.put(SpriteType.ShipDestroyed, new boolean[13][8]);
 			spriteMap.put(SpriteType.Bullet, new boolean[3][5]);
+			spriteMap.put(SpriteType.Dropped, new boolean[5][5]);
 			spriteMap.put(SpriteType.EnemyBullet, new boolean[3][5]);
 			spriteMap.put(SpriteType.EnemyShipA1, new boolean[12][8]);
 			spriteMap.put(SpriteType.EnemyShipA2, new boolean[12][8]);
