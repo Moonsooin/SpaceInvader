@@ -73,6 +73,27 @@ public class Ship extends Entity {
 		}
 	}
 
+	public void eatMoveFast(){
+		LOGGER.info("Fast_Item_Gained.");
+		if (this.shipItemState /2 % 2 == 0){
+			this.shipItemState += 2;
+			this.shootingCooldown = Core.getCooldown(FASTER_SHOOTING_INTERVAL);
+			this.shootingCooldown.reset();
+			this.shipFasterItemCooldown.reset();
+		}
+		else {
+			this.shipFasterItemCooldown.reset();
+		}
+	}
+	private void doneMoveFast(){ //(shipItemState % 2 == 1) &&
+		if((this.shipItemState /2 % 2 == 2) && this.shipFasterItemCooldown.checkFinished()){
+			LOGGER.info("Fast_Item_Finished.");
+			this.shipItemState -= 2;
+			this.shootingCooldown = Core.getCooldown(SHOOTING_INTERVAL);
+			this.shootingCooldown.reset();
+		}
+	}
+
 	/**
 	 * Moves the ship speed uni ts right, or until the right screen border is
 	 * reached.
@@ -115,6 +136,7 @@ public class Ship extends Entity {
 		else
 			this.spriteType = SpriteType.Ship;
 		doneFast();
+		doneMoveFast();
 	}
 
 	/**

@@ -7,6 +7,12 @@ import java.awt.*;
 public class Dropitem extends Entity{
 
     private int speed;
+
+    public int getItemNumber() {
+        return itemNumber;
+    }
+
+    private int itemNumber;
     /**
      * Constructor, establishes the entity's generic properties.
      *
@@ -16,9 +22,15 @@ public class Dropitem extends Entity{
      * @param height    Height of the entity.
      * @param color
      */
-    public Dropitem(final int positionX,final int positionY,final int speed) {
-        super(positionX, positionY, 3 * 2, 5 * 2, Color.CYAN);
-
+    public Dropitem(final int positionX,final int positionY,final int speed,final int itemNumber) {
+        super(positionX, positionY, 3 * 2, 5 * 2);
+        if(itemNumber == 0) {
+            this.setColor(Color.MAGENTA);
+        }
+        if(itemNumber == 1) {
+            this.setColor(Color.ORANGE);
+        }
+        this.itemNumber = itemNumber;
         this.speed = speed;
         setSprite();
     }
