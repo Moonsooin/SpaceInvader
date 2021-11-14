@@ -196,7 +196,6 @@ public class GameScreen extends Screen {
 
 		manageCollisions();
 		manageItemCollisions();
-		// manageItemDurations();
 		cleanBullets();
 		moveDropitem();
 		draw();
@@ -306,7 +305,10 @@ public class GameScreen extends Screen {
 					if (!enemyShip.isDestroyed()
 							&& checkCollision(bullet, enemyShip)) {
 						this.score += enemyShip.getPointValue();
-						enemyShip.drop(dropitems);
+						int dropProb = (int)(Math.random() * 100);
+						if(dropProb > 70) {
+							enemyShip.drop(dropitems);
+						}
 						this.shipsDestroyed++;
 						this.enemyShipFormation.destroy(enemyShip);
 						recyclable.add(bullet);
@@ -316,11 +318,9 @@ public class GameScreen extends Screen {
 						&& checkCollision(bullet, this.enemyShipSpecial)) {
 					this.score += this.enemyShipSpecial.getPointValue();
 					this.shipsDestroyed++;
-					if(Math.random() * 100 > 70) {
-						this.enemyShipSpecial.destroy();
-						this.enemyShipSpecialExplosionCooldown.reset();
-						recyclable.add(bullet);
-					}
+					this.enemyShipSpecial.destroy();
+					this.enemyShipSpecialExplosionCooldown.reset();
+					recyclable.add(bullet);
 				}
 			}
 		this.bullets.removeAll(recyclable);
@@ -338,9 +338,6 @@ public class GameScreen extends Screen {
 		this.dropitems.removeAll(garbage_item);
 	}
 
-	private void manageItemDurations() {
-		this.ship.doneFast();
-	}
 
 	/**
 	 * Checks if two entities are colliding.
