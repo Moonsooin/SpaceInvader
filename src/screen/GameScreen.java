@@ -306,7 +306,7 @@ public class GameScreen extends Screen {
 							&& checkCollision(bullet, enemyShip)) {
 						this.score += enemyShip.getPointValue();
 						int dropProb = (int)(Math.random() * 100);
-						if(dropProb > 70) {
+						if(dropProb > 30) {
 							enemyShip.drop(dropitems);
 						}
 						this.shipsDestroyed++;
@@ -331,7 +331,10 @@ public class GameScreen extends Screen {
 		for (Dropitem dropitem : this.dropitems) {
 			if (checkCollision(dropitem, this.ship) && !this.levelFinished) {
 				// 특수 효과 부여 및 아이템 제거
-				this.ship.eatFast();
+				if(dropitem.getItemNumber() == 0)
+					this.ship.eatFast();
+				if(dropitem.getItemNumber() == 1)
+					this.ship.eatMoveFast();
 				garbage_item.add(dropitem);
 			}
 		}

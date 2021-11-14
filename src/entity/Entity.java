@@ -48,6 +48,15 @@ public class Entity {
 		this.color = color;
 	}
 
+	public Entity(final int positionX, final int positionY, final int width,
+				  final int height) {
+		this.positionX = positionX;
+		this.positionY = positionY;
+		this.width = width;
+		this.height = height;
+	}
+
+
 	/**
 	 * Getter for the color of the entity.
 	 * 
@@ -55,6 +64,10 @@ public class Entity {
 	 */
 	public final Color getColor() {
 		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
 	}
 
 	/**

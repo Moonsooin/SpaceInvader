@@ -1,6 +1,7 @@
 package entity;
 
 import java.awt.Color;
+import java.util.Random;
 import java.util.Set;
 
 import engine.Cooldown;
@@ -149,7 +150,7 @@ public class EnemyShip extends Entity {
 	 */
 	public final void drop(final Set<Dropitem> dropitems) {
 		dropitems.add(new Dropitem(positionX + this.width / 2,
-				positionY + this.height / 2, ITEM_SPEED));
+				positionY + this.height / 2, ITEM_SPEED, (int)(Math.random() * 2)));
 	}
 
 	/**
