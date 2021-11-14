@@ -1,2 +1,0 @@
-add NPC_ 1
-add NPC_ 2
