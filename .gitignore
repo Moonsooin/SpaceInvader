@@ -167,5 +167,20 @@ pip-log.txt
 #############
 
 log*
-*.ttf
 .checkstyle
+.idea/.gitignore
+
+.idea/misc.xml
+
+.idea/modules.xml
+
+.idea/runConfigurations.xml
+
+.idea/vcs.xml
+
+.idea/workspace.xml
+
+out/*
+
+develop.iml
+
