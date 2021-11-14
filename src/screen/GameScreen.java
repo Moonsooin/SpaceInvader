@@ -76,7 +76,7 @@ public class GameScreen extends Screen {
 	 *            Current game state.
 	 * @param gameSettings
 	 *            Current game settings.
-	 * @param bonnusLife
+	 * @param bonusLife
 	 *            Checks if a bonus life is awarded this level.
 	 * @param width
 	 *            Screen width.
@@ -316,9 +316,11 @@ public class GameScreen extends Screen {
 						&& checkCollision(bullet, this.enemyShipSpecial)) {
 					this.score += this.enemyShipSpecial.getPointValue();
 					this.shipsDestroyed++;
-					this.enemyShipSpecial.destroy();
-					this.enemyShipSpecialExplosionCooldown.reset();
-					recyclable.add(bullet);
+					if(Math.random() * 100 > 70) {
+						this.enemyShipSpecial.destroy();
+						this.enemyShipSpecialExplosionCooldown.reset();
+						recyclable.add(bullet);
+					}
 				}
 			}
 		this.bullets.removeAll(recyclable);
