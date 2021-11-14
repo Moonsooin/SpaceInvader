@@ -180,5 +180,7 @@ log*
 
 .idea/workspace.xml
 
+.out/*
+
 develop.iml
 
