@@ -32,6 +32,7 @@ public class GameScreen extends Screen {
 	private static final int SCREEN_CHANGE_INTERVAL = 1500;
 	/** Height of the interface separation line. */
 	private static final int SEPARATION_LINE_HEIGHT = 40;
+	private static final int FAST_BULLET_DURATION = 7000;
 
 	/** Current game difficulty settings. */
 	private GameSettings gameSettings;
@@ -195,6 +196,7 @@ public class GameScreen extends Screen {
 
 		manageCollisions();
 		manageItemCollisions();
+		// manageItemDurations();
 		cleanBullets();
 		moveDropitem();
 		draw();
@@ -327,12 +329,15 @@ public class GameScreen extends Screen {
 		for (Dropitem dropitem : this.dropitems) {
 			if (checkCollision(dropitem, this.ship) && !this.levelFinished) {
 				// 특수 효과 부여 및 아이템 제거
-
-
+				this.ship.eatFast();
 				garbage_item.add(dropitem);
 			}
 		}
 		this.dropitems.removeAll(garbage_item);
+	}
+
+	private void manageItemDurations() {
+		this.ship.doneFast();
 	}
 
 	/**
