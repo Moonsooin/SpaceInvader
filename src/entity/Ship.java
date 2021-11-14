@@ -21,10 +21,11 @@ public class Ship extends Entity {
 	/** Speed of the bullets shot by the ship. */
 	private static final int BULLET_SPEED = -6;
 	/** Movement of the ship for each unit of time. */
-	private static final int SPEED = 2;
+	private static int SPEED = 2;
 
 	private static int FASTER_SHOOTING_INTERVAL = 150;
 	private static int FASTER_SHOOTING_ITEM_DURATION = 2000;
+	private static int FASTER_MOVING_ITEM_DURATION = 5000;
 	private static int shipItemState = 0;
 	private static final Logger LOGGER = Logger.getLogger(Core.class
 			.getSimpleName());
@@ -34,6 +35,7 @@ public class Ship extends Entity {
 	private Cooldown shootingCooldown;
 	/** Time spent inactive between hits. */
 	private Cooldown destructionCooldown;
+	private Cooldown shipMoveFasterItemCooldown;
 
 	/**
 	 * Constructor, establishes the ship's properties.
@@ -50,6 +52,7 @@ public class Ship extends Entity {
 		this.shootingCooldown = Core.getCooldown(SHOOTING_INTERVAL);
 		this.destructionCooldown = Core.getCooldown(1000);
 		this.shipFasterItemCooldown = Core.getCooldown(FASTER_SHOOTING_ITEM_DURATION);
+		this.shipMoveFasterItemCooldown = Core.getCooldown(FASTER_MOVING_ITEM_DURATION);
 	}
 
 	public void eatFast(){
@@ -74,23 +77,21 @@ public class Ship extends Entity {
 	}
 
 	public void eatMoveFast(){
-		LOGGER.info("Fast_Item_Gained.");
-		if (this.shipItemState /2 % 2 == 0){
+		LOGGER.info("Fast_Moving_Item_Gained.");
+		if ((this.shipItemState /2) % 2 == 0){
 			this.shipItemState += 2;
-			this.shootingCooldown = Core.getCooldown(FASTER_SHOOTING_INTERVAL);
-			this.shootingCooldown.reset();
-			this.shipFasterItemCooldown.reset();
+			this.SPEED += 4;
+			this.shipMoveFasterItemCooldown.reset();
 		}
 		else {
-			this.shipFasterItemCooldown.reset();
+			this.shipMoveFasterItemCooldown.reset();
 		}
 	}
 	private void doneMoveFast(){ //(shipItemState % 2 == 1) &&
-		if((this.shipItemState /2 % 2 == 2) && this.shipFasterItemCooldown.checkFinished()){
-			LOGGER.info("Fast_Item_Finished.");
+		if(((this.shipItemState /2) % 2 == 1) && this.shipMoveFasterItemCooldown.checkFinished()){
+			LOGGER.info("Fast_Moving_Item_Finished.");
 			this.shipItemState -= 2;
-			this.shootingCooldown = Core.getCooldown(SHOOTING_INTERVAL);
-			this.shootingCooldown.reset();
+			this.SPEED -= 4;
 		}
 	}
 
